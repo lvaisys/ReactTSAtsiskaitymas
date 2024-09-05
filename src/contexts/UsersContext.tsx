@@ -13,11 +13,12 @@ export type UserType = {
 };
 type UsersReducerActionTypes =
   { type: "setUsers", allData: UserType[] } |
-  { type: "addNewUser", newUser: UserType }
+  { type: "addNewUser", newUser: UserType } |
+  { type: "toggleSaving", userId: string, articleArray: string[]}
 export type UsersContextTypes = {
   users: UserType[],
   loggedInUser: UserType | undefined,
-  toggleSaving: (id: string) => void,
+  toggleSaving: (userId: string, oldArticleArray: string[], newArticleId: string) => void,
   addNewUser: (newUser: UserType) => void,
   logIn: (username: string, password: string) => boolean,
   logOut: () => void,
@@ -27,8 +28,10 @@ const reducer = (state: UserType[], action: UsersReducerActionTypes) => {
   switch (action.type) {
     case "setUsers":
       return action.allData;
-      case 'addNewUser':
-        return [...state, action.newUser];
+    case 'addNewUser':
+      return [...state, action.newUser];
+    case 'toggleSaving':
+      return state;
     default:
       return state;
   }
@@ -40,27 +43,12 @@ const UsersProvider = ({ children }: ChildrenProp) => {
   const [loggedInUser, setLoggedInUser] = useState<UserType | undefined>(undefined);
 
   const logIn = (username: string, password: string): boolean => {
-    console.log(username, password);
     const foundUser = users.find(user => user.username === username)
-    console.log('userFound ' + username + password);
     if (foundUser && bcrypt.compareSync(password, foundUser.password)) {
-      console.log("userFound");
       setLoggedInUser(foundUser);
       return true;
     } else {
       return false;
-    }
-  }
-  const toggleSaving = (id: string): void => {
-    console.log('toggling save');
-    const index = loggedInUser?.savedArticles.indexOf(id);
-    if (index && index > -1) { // only splice array when item is found
-      
-      console.log('Removing article');
-      loggedInUser?.savedArticles.splice(index, 1); // 2nd parameter means remove one item only
-    } else {
-      console.log('Adding article');
-      loggedInUser?.savedArticles.push(id);
     }
   }
   const logOut = () => {
@@ -72,7 +60,7 @@ const UsersProvider = ({ children }: ChildrenProp) => {
     fetch(`http://localhost:8080/users`, {
       method: "POST",
       headers: {
-        "Content-Type":"application/json"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(newUser)
     })
@@ -82,6 +70,27 @@ const UsersProvider = ({ children }: ChildrenProp) => {
     })
   }
 
+  const toggleSaving = (userId: string, oldArticleArray: string[], newArticleId: string): void => {
+    const index = oldArticleArray.indexOf(newArticleId);
+    if (index > -1) { 
+      console.log(index);
+      oldArticleArray.splice(index);
+    } else {
+      oldArticleArray.push(newArticleId);
+    }
+    console.log(oldArticleArray);
+    fetch(`http://localhost:8080/users/${loggedInUser?.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({ savedArticles: oldArticleArray })
+    });
+    dispatch({
+      type: "toggleSaving",
+      userId: userId, articleArray: oldArticleArray
+    });
+  }
   useEffect(() => {
     fetch(`http://localhost:8080/users`)
       .then(res => res.json())

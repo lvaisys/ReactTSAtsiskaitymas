@@ -33,8 +33,8 @@ const RegisterForm = () => {
     username: (input: string) => {
       if (input.length < 3) {
         return 'Must be longet than 3';
-      } else if (input.length >= 10) {
-        return 'Must be shorter than 10';
+      } else if (input.length >= 20) {
+        return 'Must be shorter than 20';
       } else if (!input) {
         return 'Field must be filled';
       } else {
@@ -154,7 +154,7 @@ const RegisterForm = () => {
         <div>
           <label htmlFor="dob">Date of birth:</label>
           <input
-            type="datetime-local"
+            type="date"
             name="dob" id="dob"
             placeholder="Enter your date of birth..."
             value={inputValues.dob}

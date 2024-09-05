@@ -6,8 +6,8 @@ import ArticlesContext, { ArticleContextType, ArticleType } from "../../contexts
 
 const AddArticle = () => {
   const navigate = useNavigate();
-  const { loggedInUser} = useContext(UsersContext) as UsersContextTypes;
-  const { addNewArticle,  } = useContext(ArticlesContext) as ArticleContextType;
+  const { loggedInUser } = useContext(UsersContext) as UsersContextTypes;
+  const { addNewArticle } = useContext(ArticlesContext) as ArticleContextType;
   const [formAnswer, setFormAnswer] = useState('');
 
   const [inputValues, setInputValues] = useState({
@@ -18,41 +18,26 @@ const AddArticle = () => {
 
   const [errorsMessages, setErrorMessages] = useState({
     image: '',
-    description: '',
-    title: '',
+    description: undefined,
+    title: undefined,
   });
 
   const registerErrorChecking: {
     [key: string]: (input: string) => string;
   } = {
     image: (input: string) => {
-      if (input.length < 3) {
-        return 'Must be longet than 3';
-      } else if (input.length >= 10) {
-        return 'Must be shorter than 10';
-      } else if (!input) {
-        return 'Field must be filled';
+      return '';
+    },
+    description: (input: string) => {
+      if (input.length < 10) {
+        return 'Description should be at least 10 characters long';
       } else {
         return '';
       }
     },
-    description: (input: string) => {
-      if (!input) {
-        return 'Email is required';
-      } else {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(input)) {
-          return 'Invalid email format';
-        } else {
-          return '';
-        }
-      }
-    },
     title: (input: string) => {
-      if (input.length < 3) {
-        return 'Password must be at least 3 characters long';
-      } else if (!/[A-Z]/.test(input)) {
-        return 'Password must contain at least one uppercase letter';
+      if (input.length < 10) {
+        return 'Title should be at least 10 characters long';
       } else {
         return '';
       }
@@ -76,11 +61,17 @@ const AddArticle = () => {
     let errorExist = false;
     Object.entries(errorsMessages)
       .forEach(([, value]) => {
-        errorExist = value !== '';
+        errorExist = value === undefined || value !== '';
       })
 
     if (!errorExist) {
-      const newArticle: ArticleType = {...inputValues, id: generateID(), createdby: loggedInUser!.id, createdbyName: loggedInUser!.username, createdByImage: loggedInUser!.photo, createdAt: (new Date()).toLocaleDateString() };
+      const newArticle: ArticleType = { 
+        ...inputValues, 
+        id: generateID(), 
+        createdby: loggedInUser!.id, 
+        createdbyName: loggedInUser!.username, 
+        createdByImage: loggedInUser!.photo, 
+        createdAt: (new Date()).toLocaleString() };
       addNewArticle(newArticle);
       navigate('/');
     } else {
