@@ -3,7 +3,27 @@ import { v4 as generateID } from "uuid"
 import { Link, useNavigate } from "react-router-dom";
 import UsersContext, { UsersContextTypes } from "../../contexts/UsersContext";
 import ArticlesContext, { ArticleContextType, ArticleType } from "../../contexts/ArticleContext";
+import styled from "styled-components";
 
+const StyledDiv = styled.div`
+  > form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    
+    p { margin: 0;}
+    >div {
+      display: flex;
+      > label {
+        width: 8%;
+      }
+      > input {
+        width: 70%;
+      }
+
+    }
+  }
+`;
 const AddArticle = () => {
   const navigate = useNavigate();
   const { loggedInUser } = useContext(UsersContext) as UsersContextTypes;
@@ -50,12 +70,14 @@ const AddArticle = () => {
       [event.target.name]: registerErrorChecking[event.target.name](event.target.value)
     });
   }
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValues({
       ...inputValues,
       [event.target.name]: event.target.value
     })
   }
+  
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     let errorExist = false;
@@ -63,24 +85,28 @@ const AddArticle = () => {
       .forEach(([, value]) => {
         errorExist = value === undefined || value !== '';
       })
-
     if (!errorExist) {
-      const newArticle: ArticleType = { 
-        ...inputValues, 
-        id: generateID(), 
-        createdby: loggedInUser!.id, 
-        createdbyName: loggedInUser!.username, 
-        createdByImage: loggedInUser!.photo, 
-        createdAt: (new Date()).toLocaleString() };
+      const newArticle: ArticleType = {
+        ...inputValues,
+        id: generateID(),
+        createdby: loggedInUser!.id,
+        createdbyName: loggedInUser!.username,
+        createdByImage: loggedInUser!.photo,
+        createdAt: (new Date()).toLocaleString()
+      };
+      setFormAnswer('Article registered successfully.');
       addNewArticle(newArticle);
-      navigate('/');
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+
     } else {
       setFormAnswer('Please fill all fields correctly');
     }
   }
 
   return (
-    <>
+    <StyledDiv>
       <form onSubmit={handleFormSubmit}>
 
         <div>
@@ -127,11 +153,11 @@ const AddArticle = () => {
         </div>
         <input type="submit" value="Add Article" />
       </form>
-      <p>Go <Link to="/">Cancel</Link></p>
+      <Link to="/">Cancel</Link>
       {
-        formAnswer && <p>Error: {formAnswer} </p>
+        formAnswer && <p>{formAnswer} </p>
       }
-    </>
+    </StyledDiv>
   );
 }
 

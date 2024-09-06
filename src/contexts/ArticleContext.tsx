@@ -1,4 +1,4 @@
-import { createContext, useReducer, useEffect } from "react";
+import { createContext, useReducer, useEffect, useState } from "react";
 
 type ChildrenType = { children: React.ReactElement };
 export type ArticleType = {
@@ -17,6 +17,7 @@ type ArticleReducerActions =
   { type: "deleteArticle", articleId: string }
 
 export type ArticleContextType = {
+  articlesLoaded: boolean,
   articles: ArticleType[],
   addNewArticle: (newArticle: ArticleType) => void,
   deleteArticle: (articleId: string) => void,
@@ -39,7 +40,8 @@ const reducer = (state: ArticleType[], action: ArticleReducerActions) => {
 const ArticlesContext = createContext<ArticleContextType | undefined>(undefined);
 const ArticlesProvider = ({ children }: ChildrenType) => {
 
-  const [articles, dispatch] = useReducer(reducer, []);
+  const [articles, dispatch] = useReducer(reducer, [],);
+  const [articlesLoaded, setArticlesLoaded] = useState(false);
   const addNewArticle = (newArticle: ArticleType) => {
     fetch(`http://localhost:8080/articles`, {
       method: "POST",
@@ -71,12 +73,13 @@ const ArticlesProvider = ({ children }: ChildrenType) => {
       .then(res => res.json())
       .then((data: ArticleType[]) => dispatch({
         type: "setData", allData: data
-      }))
+      })).then (() => setArticlesLoaded(true))
   }, []);
 
   return (
     <ArticlesContext.Provider
       value={{
+        articlesLoaded,
         articles,
         addNewArticle,
         deleteArticle,

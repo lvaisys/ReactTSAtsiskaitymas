@@ -14,13 +14,14 @@ export type UserType = {
 type UsersReducerActionTypes =
   { type: "setUsers", allData: UserType[] } |
   { type: "addNewUser", newUser: UserType } |
-  { type: "toggleSaving", userId: string, articleArray: string[]}
+  { type: "toggleSaving", userId: string, articleArray: string[] }
 export type UsersContextTypes = {
   users: UserType[],
   loggedInUser: UserType | undefined,
   toggleSaving: (userId: string, oldArticleArray: string[], newArticleId: string) => void,
   addNewUser: (newUser: UserType) => void,
-  logIn: (username: string, password: string) => boolean,
+  verifyLogIn: (username: string, password: string) => boolean,
+  logIn: (username: string, password: string) => void,
   logOut: () => void,
 }
 
@@ -42,13 +43,19 @@ const UsersProvider = ({ children }: ChildrenProp) => {
 
   const [loggedInUser, setLoggedInUser] = useState<UserType | undefined>(undefined);
 
-  const logIn = (username: string, password: string): boolean => {
+  const verifyLogIn = (username: string, password: string): boolean => {
     const foundUser = users.find(user => user.username === username)
     if (foundUser && bcrypt.compareSync(password, foundUser.password)) {
-      setLoggedInUser(foundUser);
       return true;
     } else {
       return false;
+    }
+  }
+  const logIn = (username: string, password: string): void => {
+
+    const foundUser = users.find(user => user.username === username)
+    if (foundUser && bcrypt.compareSync(password, foundUser.password)) {
+      setLoggedInUser(foundUser);
     }
   }
   const logOut = () => {
@@ -63,26 +70,27 @@ const UsersProvider = ({ children }: ChildrenProp) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(newUser)
-    })
+    });
     dispatch({
       type: "addNewUser",
       newUser: newUser
-    })
+    });
+    setTimeout(() => {
+      setLoggedInUser(newUser);
+    }, 2000);
   }
 
   const toggleSaving = (userId: string, oldArticleArray: string[], newArticleId: string): void => {
     const index = oldArticleArray.indexOf(newArticleId);
-    if (index > -1) { 
-      console.log(index);
+    if (index > -1) {
       oldArticleArray.splice(index);
     } else {
       oldArticleArray.push(newArticleId);
     }
-    console.log(oldArticleArray);
     fetch(`http://localhost:8080/users/${loggedInUser?.id}`, {
       method: "PATCH",
       headers: {
-        "Content-Type":"application/json"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({ savedArticles: oldArticleArray })
     });
@@ -107,6 +115,7 @@ const UsersProvider = ({ children }: ChildrenProp) => {
         loggedInUser,
         addNewUser,
         toggleSaving,
+        verifyLogIn,
         logIn,
         logOut
       }}

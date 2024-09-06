@@ -1,14 +1,31 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 
 import UsersContext from "../../contexts/UsersContext";
 import { UsersContextTypes } from "../../contexts/UsersContext";
+import styled from "styled-components";
+
+const StyledDiv = styled.div`
+  > form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    p { margin: 0;}
+    >div {
+      display: flex;
+      > label {
+        width: 14%;
+      }
+      > input {
+        width: 64%;
+      }
+    }
+  }
+`;
 
 const Login = () => {
 
-  const navigate = useNavigate();
-
-  const { logIn } = useContext(UsersContext) as UsersContextTypes;
+  const { logIn, verifyLogIn } = useContext(UsersContext) as UsersContextTypes;
   const [formAnswer, setFormAnswer] = useState('');
   const [inputValues, setInputValues] = useState({
     username: '',
@@ -16,7 +33,6 @@ const Login = () => {
   });
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    console.log(event);
     setInputValues({
       ...inputValues,
       [event.target.name]: event.target.value
@@ -24,21 +40,19 @@ const Login = () => {
   }
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (logIn(inputValues.username, inputValues.password)) {
-
+    if (verifyLogIn(inputValues.username, inputValues.password)) {
       setFormAnswer('Logged in successfully');
       setTimeout(() => {
-        navigate('/');
+        logIn(inputValues.username, inputValues.password);
       }, 2000);
     }
     else {
-      
       setFormAnswer('Wrong username or password');
     }
   }
 
 return (
-  <section>
+  <StyledDiv>
     <h2>Login</h2>
     <form onSubmit={handleFormSubmit}>
       <div>
@@ -67,7 +81,7 @@ return (
         formAnswer && <p>{formAnswer}</p>
       }
     <p>Go <Link to="/register">Register</Link></p>
-  </section>
+  </StyledDiv>
 );
 }
 

@@ -1,12 +1,29 @@
 import { useContext, useState } from "react";
 import { v4 as generateID } from "uuid"
 import bcrypt from 'bcryptjs';
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import UsersContext, { UsersContextTypes, UserType } from "../../contexts/UsersContext";
+import styled from "styled-components";
 
+const StyledDiv = styled.div`
+  > form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    p { margin: 0;}
+    >div {
+      display: flex;
+      > label {
+        width: 14%;
+      }
+      > input {
+        width: 64%;
+      }
+    }
+  }
+`;
 const RegisterForm = () => {
-  const navigate = useNavigate();
-  const { addNewUser, logIn } = useContext(UsersContext) as UsersContextTypes;
+  const { addNewUser, users } = useContext(UsersContext) as UsersContextTypes;
   const [formAnswer, setFormAnswer] = useState('');
 
   const [inputValues, setInputValues] = useState({
@@ -103,24 +120,33 @@ const RegisterForm = () => {
       })
 
     if (inputValues.password === inputValues.passwordRepeat && !errorExist) {
-      const newUser: UserType = {
-      id: generateID(),
-      username: inputValues.username,
-      photo: inputValues.photo || "hahahha",
-      email: inputValues.email,
-      DOB: inputValues.dob,
-      password: bcrypt.hashSync(inputValues.password, 10),
-      savedArticles: [] } ;
-      addNewUser(newUser);
-      logIn(newUser.username, newUser.password);
-      navigate('/');
+      if (users.some(user => user.email === inputValues.email)) {
+        setFormAnswer('Account with this email already exists');
+      } else if (users.some(user => user.username === inputValues.username)) {
+        setFormAnswer('Account with this username already exists');
+      } else {
+        const newUser: UserType = {
+          id: generateID(),
+          username: inputValues.username,
+          photo: inputValues.photo || "https://static.vecteezy.com/system/resources/thumbnails/005/545/335/small/user-sign-icon-person-symbol-human-avatar-isolated-on-white-backogrund-vector.jpg",
+          email: inputValues.email,
+          DOB: inputValues.dob,
+          password: bcrypt.hashSync(inputValues.password, 10),
+          savedArticles: []
+        };
+        addNewUser(newUser);
+        setFormAnswer('Registered in successfully');
+        
+      }
     } else {
       setFormAnswer('Please fill all fields correctly');
     }
   }
 
   return (
-    <>
+    <StyledDiv>
+      <h2>Registration</h2>
+      <br />
       <form onSubmit={handleFormSubmit}>
 
         <div>
@@ -211,9 +237,9 @@ const RegisterForm = () => {
       </form>
       <p>Go <Link to="/login">Login</Link></p>
       {
-        formAnswer && <p>Error: {formAnswer} </p>
+        formAnswer && <p> {formAnswer} </p>
       }
-    </>
+    </StyledDiv>
   );
 }
 

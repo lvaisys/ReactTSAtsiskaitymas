@@ -9,15 +9,12 @@ import SavedArticles from "./components/pages/SavedArticles";
 import AddArticle from "./components/pages/AddArticle";
 
 const App = () => {
-
   const { loggedInUser } = useContext(UsersContext) as UsersContextTypes;
-
   return (
     <Routes>
-
       <Route path='' element={<MainOutlet />}>
         <Route index element={<Home />} />
-        <Route path='login' element={!loggedInUser ? <Login /> : <Navigate to='/' replace />} />
+        <Route path='login' element={!loggedInUser ? <Login /> : <Navigate to='/' />} />
         <Route path='register' element={!loggedInUser ? <Register /> : <Navigate to='/' replace />} />
         <Route path='addArticle' element={loggedInUser ? <AddArticle /> : <Navigate to='/login' replace />} />
         <Route path='savedArticles' element={loggedInUser ? <SavedArticles /> : <Navigate to='/login' replace />} />

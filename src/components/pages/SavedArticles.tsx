@@ -19,21 +19,26 @@ const SavedArticles = () => {
   const { articles } = useContext(ArticlesContext) as ArticleContextType;
   const { loggedInUser } = useContext(UsersContext) as UsersContextTypes;
 
+  const filteredArticlesForUser = articles?.filter(article => loggedInUser?.savedArticles.some(a => a === article.id));
+
   return (
     <StyledArticlesContainer>
       <h2>Saved Articles</h2>
       <div>
         {
-          articles.filter(article => loggedInUser?.savedArticles.some(a=> a === article.id)).map(article => 
+          filteredArticlesForUser.length > 0 ?
+          filteredArticlesForUser!.map(article =>
             <ArticleCard
               key={article.id}
               data={article}
             />
           )
+          :
+          <p>There are no articles saved.</p>
         }
       </div>
     </StyledArticlesContainer>
   );
 }
- 
+
 export default SavedArticles;

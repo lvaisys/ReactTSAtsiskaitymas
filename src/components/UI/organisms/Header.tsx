@@ -3,12 +3,11 @@ import { NavLink, Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import UsersContext, { UsersContextTypes } from '../../../contexts/UsersContext';
 
-
 const StyledHeader = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
+  background-color: #978e36c8;
   height: 80px;
   padding: 0 10px;
 
@@ -78,7 +77,7 @@ const Header = () => {
     <StyledHeader>
       <div className="headerLogo">
         <img
-          src="https://w7.pngwing.com/pngs/750/169/png-transparent-computer-icons-writing-document-writer-article-icon-thumbnail.png"
+          src="https://t4.ftcdn.net/jpg/02/53/47/71/360_F_253477181_O2qhHg93BIliUXlWTXueei1RT0CAf3Pu.jpg"
           alt="Shared articles"
         />
         <span>Shared Articles</span>

@@ -1,56 +1,5 @@
 {
-  "articles": [
-    {
-      "id": "43fbe90d-186a-44bc-aa11-50fed7866b28",
-      "image": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcR2ZYFL9FfofmsXe5I7QOQnLU7GKcAQ2eX41Um0GzNyyWASZHBd",
-      "description": "Pats geriausias šuo ever",
-      "title": "Diegutis Suo",
-      "createdby": "518c3343-20db-43b8-aba1-2727a2701001",
-      "createdbyName": "LaurynasV",
-      "createdByImage": "https://scontent.fkun1-1.fna.fbcdn.net/v/t39.30808-6/252288807_4625752350824381_1435797053382021390_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=1CYlfD7M6P4Q7kNvgH9llWu&_nc_ht=scontent.fkun1-1.fna&_nc_gid=AVtQjF8CQ4D-FwhC09vWBcf&oh=00_AYD_R7Rbf6Wceafyr4irdApto2-8QSQMeuz33FiwxukarQ&oe=66DF8981",
-      "createdAt": "2024-09-05 21:57:02"
-    },
-    {
-      "id": "fe981f68-0037-4069-a21a-714ef7c7a0f3",
-      "image": "data:image/jpeg;base64,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",
-      "description": "Pats geriausias katinas ever",
-      "title": "Lindis katinas",
-      "createdby": "518c3343-20db-43b8-aba1-2727a2701001",
-      "createdbyName": "LaurynasV",
-      "createdByImage": "https://scontent.fkun1-1.fna.fbcdn.net/v/t39.30808-6/252288807_4625752350824381_1435797053382021390_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=1CYlfD7M6P4Q7kNvgH9llWu&_nc_ht=scontent.fkun1-1.fna&_nc_gid=AVtQjF8CQ4D-FwhC09vWBcf&oh=00_AYD_R7Rbf6Wceafyr4irdApto2-8QSQMeuz33FiwxukarQ&oe=66DF8981",
-      "createdAt": "2024-09-05 21:58:08"
-    },
-    {
-      "id": "e76116fb-bfdf-4280-ba1a-ce6c42667b9c",
-      "image": "https://media.cnn.com/api/v1/images/stellar/prod/191026120622-03-black-cat.jpg?q=w_1110,c_fill",
-      "description": "Pats geriausias katinas ever 2",
-      "title": "Monis Katinas",
-      "createdby": "7f6db912-78f1-4134-8edd-d87f04f421c3",
-      "createdbyName": "SimonasV",
-      "createdByImage": "https://scontent.fkun1-1.fna.fbcdn.net/v/t39.30808-6/274620584_5040604509338333_3401743248842796817_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=cJXqzA_TZfkQ7kNvgFXmYpR&_nc_ht=scontent.fkun1-1.fna&oh=00_AYD36UyYMu7mXq95XZAqCZJ-3QCCuN7vCQX9zN8gpul5oA&oe=66DFE448",
-      "createdAt": "2024-09-05 22:12:56"
-    }
-  ],
+  "articles": [],
   "users": [
-    {
-      "id": "518c3343-20db-43b8-aba1-2727a2701001",
-      "username": "LaurynasV",
-      "photo": "https://scontent.fkun1-1.fna.fbcdn.net/v/t39.30808-6/252288807_4625752350824381_1435797053382021390_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=1CYlfD7M6P4Q7kNvgH9llWu&_nc_ht=scontent.fkun1-1.fna&_nc_gid=AVtQjF8CQ4D-FwhC09vWBcf&oh=00_AYD_R7Rbf6Wceafyr4irdApto2-8QSQMeuz33FiwxukarQ&oe=66DF8981",
-      "email": "lvaisys@gmail.com",
-      "DOB": "1993-11-02",
-      "password": "$2a$10$X9lVvti5dibXrJbksH2yleMcdPUd10XLlUoFvqmpMrHooOYcGprmm",
-      "savedArticles": []
-    },
-    {
-      "id": "7f6db912-78f1-4134-8edd-d87f04f421c3",
-      "username": "SimonasV",
-      "photo": "https://scontent.fkun1-1.fna.fbcdn.net/v/t39.30808-6/274620584_5040604509338333_3401743248842796817_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=cJXqzA_TZfkQ7kNvgFXmYpR&_nc_ht=scontent.fkun1-1.fna&oh=00_AYD36UyYMu7mXq95XZAqCZJ-3QCCuN7vCQX9zN8gpul5oA&oe=66DFE448",
-      "email": "svaisys@gmail.com",
-      "DOB": "1995-01-18",
-      "password": "$2a$10$FCz9r5tPiTC7herrHXyQYeNlX0liamFov86SMEhsqIa6Ip.63iiyC",
-      "savedArticles": [
-        "43fbe90d-186a-44bc-aa11-50fed7866b28"
-      ]
-    }
   ]
 }
