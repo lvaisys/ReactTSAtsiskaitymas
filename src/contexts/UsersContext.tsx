@@ -32,7 +32,7 @@ const reducer = (state: UserType[], action: UsersReducerActionTypes) => {
     case 'addNewUser':
       return [...state, action.newUser];
     case 'toggleSaving':
-      return state;
+      return state.map(user => user.id === action.userId ? { ...user, savedArticles: action.articleArray } : user)
     default:
       return state;
   }
@@ -83,7 +83,7 @@ const UsersProvider = ({ children }: ChildrenProp) => {
   const toggleSaving = (userId: string, oldArticleArray: string[], newArticleId: string): void => {
     const index = oldArticleArray.indexOf(newArticleId);
     if (index > -1) {
-      oldArticleArray.splice(index);
+      oldArticleArray.splice(index,1);
     } else {
       oldArticleArray.push(newArticleId);
     }

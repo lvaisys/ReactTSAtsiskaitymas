@@ -28,6 +28,7 @@ const StyledHeader = styled.header`
   > nav{
     > ul{
       display: flex;
+      align-items: center;
       gap: 10px;
 
       margin: 0;
